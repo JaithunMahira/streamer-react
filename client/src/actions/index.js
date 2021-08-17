@@ -10,6 +10,7 @@ import {
   DELETE_STREAM,
 } from "./types";
 
+import history from "../history";
 export const signIn = (userId) => {
   return {
     type: SIGN_IN,
@@ -29,6 +30,7 @@ export const createStream = (formValues) => async (dispatch, getState) => {
   dispatch({ type: CREATE_STREAM, payload: response.data });
 
   //Do some programmatic navigation to get the user back to Streams list
+  history.push("/");
 };
 
 export const fetchStreams = () => async (dispatch) => {
@@ -42,8 +44,11 @@ export const fetchStream = (id) => async (dispatch) => {
 };
 
 export const editStream = (id, formValues) => async (dispatch) => {
-  const response = await streams.put(`/streams/${id}`, formValues);
+  const response = await streams.patch(`/streams/${id}`, formValues);
   dispatch({ type: EDIT_STREAM, payload: response.data });
+  console.log(formValues);
+  //Do some programmatic navigation to get the user back to Streams list
+  history.push("/");
 };
 
 export const deleteStream = (id) => async (dispatch) => {
